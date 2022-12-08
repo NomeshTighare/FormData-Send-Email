@@ -2,15 +2,12 @@
 import React from 'react';
 import swal from 'sweetalert';
 import "./EmailForm.css";
-import { useState, useEffect } from "react";
-import { Snackbar } from "@mui/material";
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useState  } from "react";
 function EmailForm() {
-    const { enqueueSnackbar } = useSnackbar();
   
 
   const [number, setNumber] = useState("")
-  const [errorMessage, setErrorMessage] = useState("")
+  // const [errorMessage, setErrorMessage] = useState("")
   const checkInput = (e) => {
     const onlyDigits = e.target.value.replace(/\D/g, "");
     setNumber(onlyDigits);
@@ -26,12 +23,15 @@ function EmailForm() {
         let contact = document.getElementById("Contact").value;
         let subject = document.getElementById("Subject").value;
         let message = document.getElementById("Message").value;
+        let body = "Full Name: " + name + "<br> Email: " + email + "<br/>Contact Number: " + contact + "<br/>Subject: " + subject + "<br/>Message: " + message
+        
+        let ToEmailId = 'sarvesh.panhekar@gmail.com';
+        let FromEmailId = 'nomeshtighare@gmail.com';
+        let Token = '9f1c501f-cf1c-4b65-8eb8-7f0d07d884f0';
+        let EmailSubject = 'Contact Details';
         
         if(name == ''){ 
-            // alert('Full name is empty')
-            enqueueSnackbar('This is a success message!', { e });
-
-            // setErrorMessage('Full name is empty')
+          
             console.log('Full name is empty')
 
         } else if(email == ''){
@@ -39,28 +39,30 @@ function EmailForm() {
             console.log('Email id is empty')
         }
         else if(contact == ''){
-            setErrorMessage('Contact is empty')
+            // setErrorMessage('Contact is empty')
             console.log('Contact is empty')
         }
         else if(subject == ''){
-            setErrorMessage('Subject is empty')
+            // setErrorMessage('Subject is empty')
             console.log('Subject is empty')
         }
         else if(message == ''){
-            setErrorMessage('Message is empty')
+            // setErrorMessage('Message is empty')
             console.log('Message is empty')
 
         }else {
+          
             window.Email.send({
-                SecureToken: "9f1c501f-cf1c-4b65-8eb8-7f0d07d884f0",
-                To: "sharifoffice2022@gmail.com",
-                From: "nomeshtighare@gmail.com",
-                Subject: "Contact Details",
-                Body: "Full Name: " + name + "<br> Email: " + email + "<br/>Contact Number: " + contact + "<br/>Subject: " + subject + "<br/>Message: " + message
+                SecureToken: Token,
+                To: ToEmailId,
+                From: FromEmailId,
+                Subject: EmailSubject,
+                Body: body
               }).then(
+                console.log('Submited Successfully <br/>' + body),
                 swal({
                   title: "Submited Successfully ",
-                  // text: "Done",
+                  text: EmailSubject,
                   icon: "success",
                   // button: "Okay",
                   timer: 10000,
@@ -81,8 +83,8 @@ function EmailForm() {
 
   return (
     <div className='p-5 w-50'>
-        {errorMessage && <Snackbar autoHideDuration={2000} open={errorMessage} message={errorMessage} />}
-      <form  onSubmit={(e) => { handleSubmit('error') }}  >
+        {/* {errorMessage && <Snackbar autoHideDuration={2000} open={errorMessage} message={errorMessage} />} */}
+      <form  onSubmit={(e) => { handleSubmit(e) }}  >
         <p className='fw-bold'>Contact Form Details</p>
         <div className="form-floating form-group mt-2">
           <input type="name"  className="form-control" id="Name" placeholder="Enter Your Name"  />
